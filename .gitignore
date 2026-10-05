@@ -1,0 +1,48 @@
+# Raw sequencing data
+Raw_data/
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+
+# Large/intermediate data
+Clean_data/
+Mapping/
+Stacks/
+QC/
+Coverage/
+genome_reference_cactorum/
+
+# Large genomic files
+*.bam
+*.bai
+*.sam
+*.cram
+*.crai
+*.vcf
+*.vcf.gz
+*.bcf
+
+# Logs
+*.log
+*.out
+*.err
+*.tmp
+*.temp
+slurm-*.out
+
+# R
+.RData
+.Rhistory
+.Rproj.user/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
