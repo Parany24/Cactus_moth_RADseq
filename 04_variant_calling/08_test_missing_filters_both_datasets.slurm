@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J cactus_miss_filter
-#SBATCH -o /work/user/gdobigny/Cactus_moth_RADseq/Stacks/missing_filter_tests/missing_filter_%j.out
-#SBATCH -e /work/user/gdobigny/Cactus_moth_RADseq/Stacks/missing_filter_tests/missing_filter_%j.err
+#SBATCH -o missing_filter_%j.out
+#SBATCH -e missing_filter_%j.err
 #SBATCH --partition=workq
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
@@ -26,10 +26,10 @@ set -euo pipefail
 #   - summarize SNP number and individual missingness
 #
 # Output:
-#   /work/user/gdobigny/Cactus_moth_RADseq/Stacks/missing_filter_tests
+#  Stacks/missing_filter_tests/
 # ============================================================
 
-PROJECT_DIR="/work/user/gdobigny/Cactus_moth_RADseq"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUT_DIR="${PROJECT_DIR}/Stacks/missing_filter_tests"
 
 mkdir -p "${OUT_DIR}"
