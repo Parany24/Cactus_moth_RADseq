@@ -1,71 +1,68 @@
 # Cactus moth RADseq
 
-Bioinformatics workflow for RADseq data analysis of the cactus moth *Cactoblastis cactorum*.
+Bioinformatics workflow for RADseq data analysis of the cactus moth  
+*Cactoblastis cactorum*.
 
-## Project overview
+## Workflow
 
-This repository contains scripts, metadata, summary tables and selected figures generated during the analysis of RADseq data from *Cactoblastis cactorum*.
-
-The main objectives are to process RADseq data, perform sequence quality control and mapping, generate SNP datasets, and investigate population genetic structure and ancestry.
-
-## Analysis workflow
-
-The analysis is organized into several main steps:
-
-1. **Quality control**
-   - Quality assessment of sequencing data
-   - FastQC and MultiQC reports
-
-2. **Read processing and demultiplexing**
-   - RADseq read processing
-   - Adapter removal and demultiplexing using Stacks
-
-3. **Read mapping**
-   - Mapping of cleaned reads to the *Cactoblastis cactorum* reference genome
-   - Mapping statistics and coverage estimation
-
-4. **SNP discovery and filtering**
-   - SNP calling using Stacks
-   - Filtering of SNP datasets
-   - Assessment of missing data
-   - Generation of filtered VCF datasets
-
-5. **Population structure**
-   - ADMIXTURE analyses
-   - Estimation of ancestry proportions
-   - Population assignment
-   - Geographic and host-associated patterns of genetic structure
-
-6. **Results**
-   - Summary tables
-   - Population assignments
-   - Ancestry estimates
-   - Figures used for downstream analyses and manuscript preparation
+```text
+01_quality_control/
+        ↓
+02_read_processing/
+        ↓
+03_mapping/
+        ↓
+04_variant_calling/
+        ↓
+05_population_structure/
+        ↓
+06_results/
+```
 
 ## Repository structure
 
 ```text
 Cactus_moth_RADseq/
-├── 00_reference/
-├── 01_QC/
-├── 02_mapping/
-├── 03_Stacks/
-├── 04_population_structure/
-├── 05_results/
-│
-├── scripts/
-│   ├── coverage/
-│   ├── mapping/
-│   ├── mapping_summary/
-│   ├── process_radtags/
-│   └── stacks/
-│
-├── Clean_data/
-├── Coverage/
-├── Mapping/
-├── Raw_data/
-├── Stacks/
-├── genome_reference_cactorum/
-│
+├── 01_quality_control/
+├── 02_read_processing/
+├── 03_mapping/
+├── 04_variant_calling/
+├── 05_population_structure/
+├── 06_results/
+├── metadata/
 ├── .gitignore
+├── LICENSE
 └── README.md
+```
+
+## Main tools
+
+- FastQC / MultiQC
+- Stacks
+- BWA / SAMtools
+- VCFtools / BCFtools
+- ADMIXTURE
+- R / Python
+- SLURM
+
+## Data
+
+Large sequencing and genomic files are not stored in this repository.
+
+The following directories remain on the HPC server and are excluded from Git:
+
+```text
+Raw_data/
+Clean_data/
+QC/
+Mapping/
+Stacks/
+Coverage/
+genome_reference_cactorum/
+```
+
+## Reproducibility
+
+The repository contains the scripts, metadata and selected results used to document the analysis workflow.
+
+Scripts use paths relative to the project directory whenever possible.
