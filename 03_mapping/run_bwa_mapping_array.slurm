@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J cactus_bwa
-#SBATCH -o /home/gdobigny/work/Cactus_moth_RADseq/Mapping/logs/bwa_%A_%a.out
-#SBATCH -e /home/gdobigny/work/Cactus_moth_RADseq/Mapping/logs/bwa_%A_%a.err
+#SBATCH -o bwa_%A_%a.out
+#SBATCH -e bwa_%A_%a.err
 #SBATCH --partition=workq
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
@@ -9,27 +9,49 @@
 #SBATCH --time=24:00:00
 #SBATCH --array=1-137
 #SBATCH --mail-type=END,FAIL
-#SBATCH --mail-user=paranymamionah@gmail.com
 
 set -euo pipefail
 
-PROJECT_DIR="/home/gdobigny/work/Cactus_moth_RADseq"
+# ============================================================
+# BWA-MEM mapping of filtered cactus moth RADseq reads
+#
+# Input:
+#   Clean_data/process_radtags_adapters/
+#   genome_reference_cactorum/
+#   metadata/samples_clean_bwa.txt
+#
+# Output:
+#   Mapping/bam/
+#   Mapping/stats/
+#
+# The project directory is detected automatically from the
+# location of this script.
+# ============================================================
 
+# Define project directory
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Define input files and directories
 CLEAN_DIR="${PROJECT_DIR}/Clean_data/process_radtags_adapters"
 REF="${PROJECT_DIR}/genome_reference_cactorum/Ccactorum.fcs_gx_2026_FINAL.fa"
-SAMPLE_LIST="${PROJECT_DIR}/samples_clean_bwa.txt"
+SAMPLE_LIST="${PROJECT_DIR}/metadata/samples_clean_bwa.txt"
 
+# Define output directories
 BAM_DIR="${PROJECT_DIR}/Mapping/bam"
 STATS_DIR="${PROJECT_DIR}/Mapping/stats"
 
+# Create output directories
 mkdir -p "${BAM_DIR}" "${STATS_DIR}"
 
+# Load required software
 module purge
 module load bioinfo/bwa/0.7.19
 module load bioinfo/samtools/1.20
 
+# Get sample corresponding to the SLURM array task
 SAMPLE=$(sed -n "${SLURM_ARRAY_TASK_ID}p" "${SAMPLE_LIST}")
 
+# Define paired-end input files
 R1="${CLEAN_DIR}/${SAMPLE}.1.fq.gz"
 R2="${CLEAN_DIR}/${SAMPLE}.2.fq.gz"
 
@@ -41,6 +63,7 @@ echo "R2: ${R2}"
 echo "Reference: ${REF}"
 echo "======================================"
 
+# Check that input files exist
 if [[ ! -f "${R1}" ]]; then
     echo "ERROR: R1 file not found: ${R1}"
     exit 1
@@ -81,4 +104,3 @@ samtools stats \
     > "${STATS_DIR}/${SAMPLE}.samtools_stats.txt"
 
 echo "Mapping finished successfully for ${SAMPLE}"
-

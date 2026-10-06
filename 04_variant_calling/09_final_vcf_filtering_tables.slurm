@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J cactus_final_vcf
-#SBATCH -o /home/gdobigny/work/Cactus_moth_RADseq/Stacks/final_vcf_filtering/final_filtering_%j.out
-#SBATCH -e /home/gdobigny/work/Cactus_moth_RADseq/Stacks/final_vcf_filtering/final_filtering_%j.err
+#SBATCH -o /work/user/gdobigny/Cactus_moth_RADseq/Stacks/final_vcf_filtering/final_filtering_%j.out
+#SBATCH -e /work/user/gdobigny/Cactus_moth_RADseq/Stacks/final_vcf_filtering/final_filtering_%j.err
 #SBATCH --partition=workq
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
@@ -37,7 +37,7 @@ set -euo pipefail
 #   final .imiss and .lmiss files
 # ============================================================
 
-PROJECT_DIR="/home/gdobigny/work/Cactus_moth_RADseq"
+PROJECT_DIR="/work/user/gdobigny/Cactus_moth_RADseq"
 
 OUT_DIR="${PROJECT_DIR}/Stacks/final_vcf_filtering"
 mkdir -p "${OUT_DIR}"

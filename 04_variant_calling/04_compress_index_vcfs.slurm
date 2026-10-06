@@ -1,22 +1,37 @@
 #!/bin/bash
 #SBATCH -J cactus_vcf_gzip
-#SBATCH -o /home/gdobigny/work/Cactus_moth_RADseq/Stacks/vcf_gzip_%j.out
-#SBATCH -e /home/gdobigny/work/Cactus_moth_RADseq/Stacks/vcf_gzip_%j.err
+#SBATCH -o vcf_gzip_%j.out
+#SBATCH -e vcf_gzip_%j.err
 #SBATCH --partition=workq
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
 #SBATCH --mem=8G
 #SBATCH --time=04:00:00
-#SBATCH --mail-user=paranymamionah@gmail.com
 #SBATCH --mail-type=END,FAIL
 
 set -euo pipefail
 
+# ============================================================
+# Compress and index VCF files
+#
+# Input:
+#   Stacks/populations_all_snps/populations.snps.vcf
+#   Stacks/populations_random_snp/populations.snps.vcf
+#
+# Output:
+#   Corresponding .vcf.gz and .vcf.gz.tbi files
+#
+# The project directory is detected automatically from the
+# location of this script.
+# ============================================================
+
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+VCF1="${PROJECT_DIR}/Stacks/populations_all_snps/populations.snps.vcf"
+VCF2="${PROJECT_DIR}/Stacks/populations_random_snp/populations.snps.vcf"
+
 module purge
 module load bioinfo/Bcftools/1.9
-
-VCF1="/home/gdobigny/work/Cactus_moth_RADseq/Stacks/populations_all_snps/populations.snps.vcf"
-VCF2="/home/gdobigny/work/Cactus_moth_RADseq/Stacks/populations_random_snp/populations.snps.vcf"
 
 echo "Compressing and indexing VCF files"
 echo "--------------------------------------------------"
@@ -49,4 +64,3 @@ do
 done
 
 echo "Finished compressing and indexing VCF files."
-

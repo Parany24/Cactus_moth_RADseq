@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -J cactus_missing
-#SBATCH -o /home/gdobigny/work/Cactus_moth_RADseq/Stacks/missing_data/missing_data_%j.out
-#SBATCH -e /home/gdobigny/work/Cactus_moth_RADseq/Stacks/missing_data/missing_data_%j.err
+#SBATCH -o /work/user/gdobigny/Cactus_moth_RADseq/Stacks/missing_data/missing_data_%j.out
+#SBATCH -e /work/user/gdobigny/Cactus_moth_RADseq/Stacks/missing_data/missing_data_%j.err
 #SBATCH --partition=workq
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=2
@@ -12,7 +12,7 @@
 
 set -euo pipefail
 
-PROJECT_DIR="/home/gdobigny/work/Cactus_moth_RADseq"
+PROJECT_DIR="/work/user/gdobigny/Cactus_moth_RADseq"
 OUT_DIR="${PROJECT_DIR}/Stacks/missing_data"
 
 mkdir -p "${OUT_DIR}"

@@ -5,21 +5,38 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
 #SBATCH --time=02:00:00
-#SBATCH --mail-user=paranymamionah@gmail.com
-#SBATCH --mail-type=BEGIN,END,FAIL
 
-module purge
-module load bioinfo/FastQC/0.12.1
+# ============================================================
+# FastQC quality control for filtered cactus moth RADseq reads
+#
+# Input:
+#   Clean_data/process_radtags_adapters/
+#
+# Output:
+#   QC/fastqc_filtered_reports/
+#
+# The project directory is detected automatically from the
+# location of this script.
+# ============================================================
 
-# Define directories
-raw_data_dir=~/work/Cactus_moth_RADseq/Clean_data/process_radtags_adapters
-output_dir=~/work/Cactus_moth_RADseq/QC/fastqc_filtered_reports
+set -euo pipefail
+
+# Define project directory
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Define input and output directories
+raw_data_dir="${PROJECT_DIR}/Clean_data/process_radtags_adapters"
+output_dir="${PROJECT_DIR}/QC/fastqc_filtered_reports"
 
 # Create output directory if it does not exist
 mkdir -p "${output_dir}"
 
+# Load FastQC
+module purge
+module load bioinfo/FastQC/0.12.1
+
 # Move to filtered data directory
-cd "${raw_data_dir}" || exit
+cd "${raw_data_dir}" || exit 1
 
 # Loop through all R1 filtered files
 for r1_file in *_1.fq.gz

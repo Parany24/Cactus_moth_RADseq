@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-PROJECT_DIR="/home/gdobigny/work/Cactus_moth_RADseq"
+PROJECT_DIR="/work/user/gdobigny/Cactus_moth_RADseq"
 MAPPING_TABLE="${PROJECT_DIR}/mapping_table.tsv"
 
 # Your real BAMs are named with SRA accessions

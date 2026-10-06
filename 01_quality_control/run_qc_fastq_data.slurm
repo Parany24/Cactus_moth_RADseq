@@ -8,18 +8,29 @@
 #SBATCH --mem=8G
 #SBATCH --time=24:00:00
 
-
 # ============================================================
 # FastQC quality control for cactus moth RADseq FASTQ files
-# Input:  /home/gdobigny/work/Cactus_moth_RADseq/Raw_data
-# Output: /home/gdobigny/work/Cactus_moth_RADseq/QC/fastqc_reports
+#
+# Input:
+#   Raw_data/
+#
+# Output:
+#   QC/fastqc_reports/
+#
+# The project directory is detected automatically from the
+# location of this script.
 # ============================================================
 
-# Define directories
-raw_data_dir="/home/gdobigny/work/Cactus_moth_RADseq/Raw_data"
-output_dir="/home/gdobigny/work/Cactus_moth_RADseq/QC/fastqc_reports"
+set -euo pipefail
 
-# Create output directory outside Raw_data
+# Define project directory
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Define input and output directories
+raw_data_dir="${PROJECT_DIR}/Raw_data"
+output_dir="${PROJECT_DIR}/QC/fastqc_reports"
+
+# Create output directory if it does not exist
 mkdir -p "${output_dir}"
 
 # Load FastQC
@@ -27,25 +38,20 @@ module purge
 module load bioinfo/FastQC/0.12.1
 
 # Move to raw data directory
-cd "${raw_data_dir}"
+cd "${raw_data_dir}" || exit 1
 
-# Loop through all R1 files
+# Loop through all R1 FASTQ files
 for r1_file in *_1.fastq.gz
 do
-    # Derive sample name by removing _1.fastq.gz
     sample=$(basename "${r1_file}" _1.fastq.gz)
-
-    # Define corresponding R2 file
     r2_file="${sample}_2.fastq.gz"
 
-    # Check that R2 exists
     if [[ -f "${r2_file}" ]]
     then
         echo "Processing sample: ${sample}"
         echo "R1: ${r1_file}"
         echo "R2: ${r2_file}"
 
-        # Run FastQC on both paired-end files
         fastqc \
             --threads 4 \
             "${r1_file}" "${r2_file}" \
@@ -57,4 +63,3 @@ done
 
 echo "FastQC analysis complete."
 echo "Reports saved in: ${output_dir}"
-
